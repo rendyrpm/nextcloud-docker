@@ -1,4 +1,4 @@
-Fill in the **uploads.ini** according to your needs.
+After you run the container, fill out the **uploads.ini** file according to your needs.  
 For example:
 
 ```
