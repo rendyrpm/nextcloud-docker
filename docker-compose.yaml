@@ -1,0 +1,33 @@
+services:
+  mysql:
+    image: mysql:${MYSQL_VERSION}
+    container_name: nextcloud-db
+    restart: always
+    volumes:
+      - ./mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+
+  nextcloud:
+    image: nextcloud:${NEXTCLOUD_VERSION}
+    container_name: nextcloud-apps
+    ports:
+      - 8001:80
+#      - 443:443
+    restart: always
+    volumes:
+      - ./nextcloud:/var/www/html
+      - ./php/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+
+    links:
+      - mysql:mysql
+    environment:
+      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      VIRTUAL_HOST: ${HOST}
+    depends_on:
+      - mysql
